@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Retail XXX | Torre de Control Financiera · Entrega final</title>
+<style>
+:root{
+  --bg:#f4f7fb;
+  --panel:#ffffff;
+  --panel-2:#f8fbff;
+  --line:#dbe4f0;
+  --text:#1b2b3a;
+  --muted:#64748b;
+  --nav:#0f172a;
+  --nav-2:#1e293b;
+  --brand:#2563eb;
+  --brand-2:#06b6d4;
+  --success:#0f9f6e;
+  --warning:#d97706;
+  --danger:#dc2626;
+  --shadow:0 18px 42px rgba(15,23,42,.08);
+  font-family:Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#eef4ff 0%, #f7fbff 120%);color:var(--text)}
+.shell{min-height:100vh;display:grid;grid-template-columns:280px minmax(0,1fr)}
+aside{background:linear-gradient(180deg,var(--nav) 0%, var(--nav-2) 100%);color:#fff;padding:24px 18px 20px;display:flex;flex-direction:column;gap:18px;border-right:1px solid rgba(255,255,255,.08)}
+.brand{padding:8px 10px 16px;border-bottom:1px solid rgba(255,255,255,.08)}
+.brand h1{margin:0;font-size:23px;line-height:1.15}
+.brand small{display:block;color:#cbd5e1;font-size:12px;margin-top:8px;line-height:1.45}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
+.steps span{display:block;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);padding:7px 6px;border-radius:10px;font-size:10px;text-align:center;color:#dce7f4}
+nav{display:grid;gap:7px}
+nav button{appearance:none;border:0;background:transparent;color:#d7e4f3;padding:13px 14px;border-radius:12px;text-align:left;font:inherit;cursor:pointer;display:flex;align-items:center;gap:10px}
+nav button:hover,nav button[aria-current="page"]{background:linear-gradient(90deg,rgba(37,99,235,.28),rgba(6,182,212,.18));color:#fff}
+nav b{font-size:14px}
+nav small{display:block;font-size:11px;color:#b4c4d8}
+.quickNote{margin-top:auto;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px}
+.quickNote h4{margin:0 0 8px;font-size:13px}
+.quickNote p{margin:0;color:#cfdae9;font-size:12px;line-height:1.55}
+main{padding:26px clamp(16px,3vw,36px) 48px;min-width:0}
+.topbar{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.titleBlock .eyebrow{font-size:12px;color:var(--brand);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.titleBlock h2{margin:6px 0 8px;font-size:30px;line-height:1.1}
+.titleBlock p{margin:0;color:var(--muted);max-width:760px}
+.heroActions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.statusPill{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;font-size:12px;font-weight:700;background:#e8f1ff;color:#1d4ed8;border:1px solid #bfd3ff}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin:20px 0 6px}
+.toolbar .field{min-width:160px;flex:0 0 auto}
+.card,.heroCard,.statCard{background:var(--panel);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:18px}
+.heroCard{padding:18px;margin-top:16px;background:linear-gradient(135deg,#ffffff 0%,#f7fbff 100%)}
+.card{padding:18px;margin-top:16px}
+.grid2{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:16px}
+.statCard{padding:16px;border-radius:16px;background:linear-gradient(180deg,#fff 0%,#f9fbfe 100%)}
+.statCard .label{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.statCard .value{font-size:27px;font-weight:800;margin-top:8px}
+.statCard .sub{font-size:12px;color:var(--muted);margin-top:8px}
+.sectionHead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.sectionHead h3{margin:0;font-size:19px}
+.sectionHead p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.metric{padding:14px;border:1px solid var(--line);border-radius:14px;background:var(--panel-2)}
+.metric b{display:block;font-size:13px}
+.metric span{display:block;font-size:12px;color:var(--muted);margin-top:4px}
+.metric strong{display:block;font-size:22px;margin-top:8px}
+.barList{display:grid;gap:10px}
+.barItem{display:grid;grid-template-columns:120px 1fr auto;gap:12px;align-items:center}
+.track{height:10px;border-radius:999px;background:#e7edf7;overflow:hidden}
+.track > div{height:100%;background:linear-gradient(90deg,var(--brand),var(--brand-2))}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border-radius:12px;border:1px solid #cbd5e1;padding:10px 14px;background:#fff;color:var(--text)}
+button.primary{background:linear-gradient(90deg,var(--brand),var(--brand-2));border:none;color:#fff;font-weight:700}
+button.ghost{background:#eff6ff;border-color:#d6e5ff;color:#1d4ed8}
+button.warn{background:#fff7ed;border-color:#fed7aa;color:#9a3412}
+button.danger{background:#fef2f2;border-color:#fecaca;color:#b91c1c}
+button:disabled{opacity:.55;cursor:not-allowed}
+label{display:block;font-size:12px;font-weight:700;margin-bottom:6px;color:#334155}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid #cbd5e1;border-radius:12px;background:#fff;color:var(--text)}
+textarea{min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus{outline:3px solid rgba(37,99,235,.18);outline-offset:1px}
+.fields{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.fields .wide{grid-column:span 2}
+.muted{color:var(--muted);font-size:13px}
+.help{font-size:12px;color:var(--muted);margin-top:6px}
+.page{display:none}.page.active{display:block}
+.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:16px}
+table{width:100%;border-collapse:collapse;min-width:880px;background:#fff}
+th,td{padding:12px 10px;border-bottom:1px solid #e8eef5;text-align:left;vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:#475569;background:#f8fbff}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+tr:hover td{background:#fbfdff}
+.badge{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:700}
+.badge.ok{background:#e7f8ef;color:#0f9f6e}
+.badge.warn{background:#fff4db;color:#b45309}
+.badge.bad{background:#feecec;color:#c62828}
+.badge.info{background:#e7f1ff;color:#1d4ed8}
+.alertList{display:grid;gap:10px}
+.alertCard{border:1px solid var(--line);border-left:6px solid var(--warning);border-radius:14px;padding:14px;background:#fff}
+.alertCard.high{border-left-color:var(--danger);background:#fff7f7}
+.alertCard.medium{border-left-color:var(--warning);background:#fffaf2}
+.alertCard.low{border-left-color:#2563eb;background:#f8fbff}
+.alertCard h4{margin:0 0 6px;font-size:14px}
+.alertCard p{margin:0;font-size:13px;line-height:1.55;color:#334155}
+.alertMeta{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.matrix{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.tile{padding:16px;border:1px solid var(--line);border-radius:16px;background:#fff}
+.tile h4{margin:0 0 8px}
+.tile p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+.progress{height:10px;background:#e8eef7;border-radius:999px;overflow:hidden}
+.progress > div{height:100%;background:linear-gradient(90deg,#22c55e,#14b8a6)}
+.empty{padding:18px;text-align:center;border:1px dashed #cbd5e1;border-radius:14px;background:#fbfdff;color:var(--muted)}
+.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;background:#eef4ff;color:#1d4ed8;font-size:11px;font-weight:700}
+.logList{display:grid;gap:10px}
+.logItem{padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#fff}
+.logItem strong{display:block;font-size:13px}
+.logItem span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.footerNote{margin-top:16px;color:var(--muted);font-size:12px}
+.sr{position:absolute;left:-9999px}
+#toast{position:fixed;right:16px;bottom:16px;background:#0f172a;color:#fff;padding:13px 16px;border-radius:14px;display:none;max-width:360px;box-shadow:var(--shadow);z-index:20}
+@media(max-width:1200px){.stats{grid-template-columns:repeat(3,1fr)}.fields{grid-template-columns:repeat(2,minmax(0,1fr))}.matrix{grid-template-columns:repeat(2,1fr)}.grid2,.grid3{grid-template-columns:1fr}}
+@media(max-width:940px){.shell{grid-template-columns:1fr}aside{position:sticky;top:0;z-index:9}.steps{display:none}nav{display:flex;overflow:auto}.quickNote{display:none}main{padding:18px}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.stats,.fields,.matrix,.kv{grid-template-columns:1fr}.barItem{grid-template-columns:1fr}.titleBlock h2{font-size:24px}}
+@media print{aside,.toolbar,.heroActions,button{display:none!important}.shell{display:block}.page{display:block!important}.card,.heroCard,.statCard{box-shadow:none}}
+
+.productTag{display:inline-flex;margin-top:13px;font-size:10px;letter-spacing:.11em;font-weight:800;border:1px solid #35536e;color:#bce6f9;background:#1c3652;border-radius:99px;padding:7px 10px}
+.fileButton{display:inline-flex;align-items:center;cursor:pointer;border-radius:12px;border:1px solid #cbd5e1;padding:10px 14px;background:#fff;color:#1b2b3a;margin:0;font-size:14px;font-weight:400}
+.fileButton:hover{background:#eff6ff}
+.testOutput{border:1px dashed #bfd4e7;border-radius:12px;background:#f8fbff;padding:15px;margin-top:12px;font-size:13px;line-height:1.65}
+.testOutput strong{display:block;margin-bottom:5px}
+.noteRibbon{background:#eaf4ff;color:#1e4b79;padding:10px 16px;border-left:4px solid #2563eb;border-radius:12px;font-size:12px;margin:14px 0}
+nav button[aria-current=page]{box-shadow:inset 3px 0 #38bdf8}
+@media (prefers-reduced-motion: reduce){*{scroll-behavior:auto!important;animation-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside>
+    <div class="brand">
+      <h1>Retail XXX</h1>
+      <small>Torre de Control Financiera<br>Gestión, seguimiento y cierre financiero.</small><span class="productTag">APLICACIÓN FINAL · V3</span>
+      <div class="steps">
+        <span>1<br>Período</span><span>2<br>Registros</span><span>3<br>Validación</span><span>4<br>Cierre</span>
+      </div>
+    </div>
+    <nav aria-label="Secciones">
+      <button data-page="dashboard" aria-current="page"><div><b>Resumen ejecutivo</b><small>Indicadores y estado general</small></div></button>
+      <button data-page="registros"><div><b>Registros financieros</b><small>Carga, edición y búsqueda</small></div></button>
+      <button data-page="alertas"><div><b>Centro de alertas</b><small>Incidencias y correcciones</small></div></button>
+      <button data-page="seguimiento"><div><b>Seguimiento</b><small>Cobertura por país</small></div></button>
+      <button data-page="cierres"><div><b>Cierres e histórico</b><small>Cierre mensual y trazabilidad</small></div></button>
+      <button data-page="datos"><div><b>Centro de datos</b><small>Importar, exportar y respaldo</small></div></button>
+      <button data-page="guia"><div><b>Guía de uso</b><small>Apoyo para el usuario</small></div></button>
+    </nav>
+    <div class="quickNote">
+      <h4>Recomendación de trabajo</h4>
+      <p>Crea el período, completa las cuentas por país, valida las observaciones y registra el cierre solo cuando el período esté listo.</p>
+    </div>
+  </aside>
+  <main>
+    <div class="topbar">
+      <div class="titleBlock">
+        <div class="eyebrow">Retail XXX · Torre de Control Financiera · V3</div>
+        <h2 id="pageTitle">Resumen ejecutivo</h2>
+        <p id="pageSubtitle">Visualiza el estado del período activo, sus indicadores y las actividades clave para completar el cierre financiero.</p>
+      </div>
+      <div class="heroActions">
+        <span class="statusPill" id="headerState">Sin período activo</span>
+        <button class="ghost" id="jumpToAlerts">Ver alertas</button>
+        <button class="primary" id="jumpToClose">Cerrar período</button>
+      </div>
+    </div>
+
+    <div class="heroCard">
+      <div class="toolbar">
+        <div class="field">
+          <label for="periodInput">Período de trabajo</label>
+          <input type="month" id="periodInput">
+        </div>
+        <div class="field">
+          <label for="countryFilter">Filtro de país</label>
+          <select id="countryFilter"><option value="ALL">Todos los países</option></select>
+        </div>
+        <div class="field" style="min-width:180px">
+          <label for="tableSearch">Búsqueda de registros</label>
+          <input id="tableSearch" placeholder="ID, nota o país">
+        </div>
+        <div class="inline">
+          <button class="primary" id="createPeriodBtn" type="button">Crear / abrir período</button>
+          <button id="autofillBtn" type="button">Completar estructura base</button>
+        </div>
+      </div>
+      <div class="footerNote"><span class="chip">Modo demostración académica</span> &nbsp; Período activo: <strong id="activePeriodLabel">Sin seleccionar</strong>. Los registros se guardan localmente en este navegador. No introducir información confidencial.</div>
+    </div>
+
+    <section class="page active" id="page-dashboard">
+      <div class="stats" id="stats"></div>
+      <div class="grid2">
+        <div class="card">
+          <div class="sectionHead"><div><h3>Resultados por país</h3><p>Comparación de resultados de gestión del período activo.</p></div></div>
+          <div class="barList" id="countryBars"></div>
+          <div class="tablewrap" style="margin-top:16px">
+            <table>
+              <thead><tr><th>País</th><th>Ventas USD</th><th>Costos USD</th><th>Resultado USD</th><th>Cobertura</th></tr></thead>
+              <tbody id="countrySummaryTable"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="sectionHead"><div><h3>Estado del período</h3><p>Resumen del flujo operacional y de cierre.</p></div></div>
+          <div class="kv">
+            <div class="metric"><b>Validación</b><strong id="metricValidation">Pendiente</strong><span id="metricValidationSub">Sin período activo.</span></div>
+            <div class="metric"><b>Cierre</b><strong id="metricClose">No disponible</strong><span id="metricCloseSub">El cierre se habilita cuando no existen alertas altas ni medias.</span></div>
+            <div class="metric"><b>Avance de cobertura</b><strong id="metricCoverage">0%</strong><span id="metricCoverageSub">Se requiere registrar ventas y costos por país.</span></div>
+            <div class="metric"><b>Última actividad</b><strong id="metricLastAction">Sin acciones</strong><span id="metricLastActionSub">La bitácora se actualiza automáticamente.</span></div>
+          </div>
+          <div class="sectionHead" style="margin-top:18px"><div><h3>Acciones rápidas</h3><p>Atajos para completar el trabajo del período.</p></div></div>
+          <div class="toolbar">
+            <button class="primary" id="quickAddRecord">Agregar registro</button>
+            <button id="quickValidate">Validar período</button>
+            <button id="quickExport">Exportar resumen</button>
+          </div>
+          <div class="sectionHead" style="margin-top:18px"><div><h3>Bitácora reciente</h3><p>Últimas acciones registradas en la aplicación.</p></div></div>
+          <div class="logList" id="recentLog"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-registros">
+      <div class="grid2">
+        <div class="card">
+          <div class="sectionHead"><div><h3>Registro financiero</h3><p>Ingresa o actualiza información financiera del período activo.</p></div></div>
+          <form id="recordForm">
+            <div class="fields">
+              <div class="field"><label for="fId">Identificador</label><input id="fId" maxlength="24" required pattern="[A-Za-z0-9_-]+"></div>
+              <div class="field"><label for="fCountry">País</label><select id="fCountry"></select></div>
+              <div class="field"><label for="fAccount">Cuenta</label><select id="fAccount"><option>VENTAS</option><option>COSTOS</option></select></div>
+              <div class="field"><label for="fAmount">Monto USD</label><input id="fAmount" type="number" min="0" step="0.01" required></div>
+              <div class="field wide"><label for="fNote">Referencia / nota</label><input id="fNote" maxlength="140" placeholder="Documento, responsable o comentario"></div>
+              <div class="field"><label for="fOwner">Responsable</label><input id="fOwner" maxlength="80" placeholder="Analista o área"></div>
+            </div>
+            <div class="toolbar">
+              <button class="primary" id="saveRecordBtn" type="submit">Guardar registro</button>
+              <button id="cancelEditBtn" type="button">Cancelar edición</button>
+              <button id="validateBtn" type="button">Validar período</button>
+            </div>
+            <div class="help">Sugerencia: usa identificadores únicos por país y cuenta, por ejemplo CHI_VENTAS_01 o PER_COSTOS_01.</div>
+          </form>
+        </div>
+        <div class="card">
+          <div class="sectionHead"><div><h3>Carga rápida</h3><p>Facilita la incorporación masiva de registros.</p></div></div>
+          <label for="bulkText">Pegar registros CSV</label>
+          <textarea id="bulkText" placeholder="id,pais,cuenta,monto,nota,responsable\nCHI_VENTAS_01,Chile,VENTAS,120000,Cierre de ventas,Finanzas CL"></textarea>
+          <div class="toolbar">
+            <button id="importTextBtn" type="button">Importar desde texto</button>
+            <button id="downloadTemplateBtn" type="button">Descargar plantilla CSV</button><label class="fileButton">Seleccionar archivo CSV<input id="csvFileInput" type="file" accept=".csv,text/csv" class="sr"></label>
+          </div>
+          <div class="help">Formato esperado: <strong>id,pais,cuenta,monto,nota,responsable</strong>. Se aceptan separadores de coma o punto y coma, encabezado y comillas CSV. Antes de incorporar datos se validan todas las filas del archivo.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="sectionHead"><div><h3>Registros del período</h3><p>Consulta, filtra y edita la información registrada.</p></div><span class="chip" id="recordsCounter">0 registros</span></div>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>ID</th><th>País</th><th>Cuenta</th><th>Monto USD</th><th>Nota</th><th>Responsable</th><th>Actualizado</th><th>Acciones</th></tr></thead>
+            <tbody id="recordsTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-alertas">
+      <div class="grid3">
+        <div class="tile"><h4>Alertas altas</h4><p>Situaciones que bloquean el cierre y exigen corrección inmediata.</p><strong id="countHigh" style="font-size:28px;display:block;margin-top:12px">0</strong></div>
+        <div class="tile"><h4>Alertas medias</h4><p>Observaciones que afectan la completitud o la consistencia del período.</p><strong id="countMedium" style="font-size:28px;display:block;margin-top:12px">0</strong></div>
+        <div class="tile"><h4>Alertas bajas</h4><p>Oportunidades de mejora o datos complementarios recomendados.</p><strong id="countLow" style="font-size:28px;display:block;margin-top:12px">0</strong></div>
+      </div>
+      <div class="card">
+        <div class="sectionHead"><div><h3>Centro de alertas</h3><p>Revisa las incidencias detectadas y la forma de resolverlas.</p></div><button id="goToRecordsFromAlerts">Ir a registros</button></div>
+        <div class="alertList" id="alertsList"></div>
+      </div>
+    </section>
+
+    <section class="page" id="page-seguimiento">
+      <div class="grid2">
+        <div class="card">
+          <div class="sectionHead"><div><h3>Seguimiento por país</h3><p>Controla la cobertura mínima requerida para ventas y costos.</p></div></div>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>País</th><th>Registros</th><th>Cuentas requeridas</th><th>Cobertura</th><th>Estado</th><th>Alertas</th></tr></thead>
+              <tbody id="trackingTable"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="sectionHead"><div><h3>Checklist operativo</h3><p>Verifica los pasos necesarios para completar el cierre.</p></div></div>
+          <div id="checklist"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-cierres">
+      <div class="grid2">
+        <div class="card">
+          <div class="sectionHead"><div><h3>Cierre del período</h3><p>Formaliza el cierre cuando el período esté listo.</p></div></div>
+          <div class="fields">
+            <div class="field"><label for="closeOwner">Responsable del cierre</label><input id="closeOwner" maxlength="80" placeholder="Nombre o área responsable"></div>
+            <div class="field wide"><label for="closeComment">Comentario de cierre</label><input id="closeComment" maxlength="140" placeholder="Observación breve del cierre"></div>
+          </div>
+          <div class="toolbar">
+            <button class="primary" id="closeBtn" type="button">Registrar cierre</button>
+            <button id="reopenBtn" type="button">Reabrir período</button>
+          </div>
+          <div class="help">Al cerrar un período, los registros quedan protegidos hasta su reapertura.</div>
+        </div>
+        <div class="card">
+          <div class="sectionHead"><div><h3>Estado actual del cierre</h3><p>Condición vigente del período seleccionado.</p></div></div>
+          <div id="closureState"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="sectionHead"><div><h3>Histórico de cierres</h3><p>Períodos cerrados y sus resultados consolidados.</p></div></div>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Período</th><th>Responsable</th><th>Comentario</th><th>Ventas</th><th>Costos</th><th>Resultado</th><th>Fecha de cierre</th></tr></thead>
+            <tbody id="historyTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="page-datos">
+      <div class="grid3">
+        <div class="card">
+          <div class="sectionHead"><div><h3>Exportar registros</h3><p>Descarga el detalle del período activo en formato CSV.</p></div></div>
+          <button class="primary" id="exportRecordsBtn">Descargar registros CSV</button>
+        </div>
+        <div class="card">
+          <div class="sectionHead"><div><h3>Exportar resumen</h3><p>Obtén el consolidado por país y total general.</p></div></div>
+          <button class="primary" id="exportSummaryBtn">Descargar resumen CSV</button>
+        </div>
+        <div class="card">
+          <div class="sectionHead"><div><h3>Respaldo completo</h3><p>Guarda y restaura la información almacenada en esta aplicación.</p></div></div>
+          <div class="toolbar">
+            <button class="primary" id="backupBtn">Descargar respaldo JSON</button>
+            <label class="ghost" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer">Restaurar respaldo<input id="restoreInput" type="file" accept="application/json" class="sr"></label>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="sectionHead"><div><h3>Bitácora completa</h3><p>Historial de acciones registradas en la aplicación.</p></div><button id="exportLogBtn">Exportar bitácora CSV</button></div>
+        <div class="logList" id="fullLog"></div>
+      </div>
+    </section>
+
+    <section class="page" id="page-guia">
+      <div class="card">
+        <div class="sectionHead"><div><h3>Guía de uso</h3><p>Pasos recomendados para utilizar la aplicación.</p></div></div>
+        <div class="matrix">
+          <div class="tile"><h4>1. Crear período</h4><p>Selecciona un mes y utiliza “Crear / abrir período” para comenzar a trabajar.</p></div>
+          <div class="tile"><h4>2. Registrar información</h4><p>Agrega ventas y costos por país. También puedes utilizar la carga rápida mediante CSV.</p></div>
+          <div class="tile"><h4>3. Validar y corregir</h4><p>Revisa el Centro de alertas para resolver inconsistencias antes del cierre.</p></div>
+          <div class="tile"><h4>4. Cerrar y respaldar</h4><p>Registra el cierre, exporta el resumen y descarga un respaldo JSON.</p></div>
+        </div>
+        <div class="footerNote">Países considerados: Chile, Perú, Colombia, Argentina y México. Cuentas por país: Ventas y Costos. Moneda homogénea de trabajo: USD; no incluye conversión cambiaria ni eliminaciones intragrupo.</div><div class="sectionHead" style="margin-top:20px"><div><h3>Comprobación y demostración</h3><p>Herramientas para verificar reglas del aplicativo y recuperar un caso de ejemplo.</p></div></div><div class="toolbar"><button class="primary" id="runTestsBtn" type="button">Ejecutar autopruebas</button><button class="warn" id="resetDemoBtn" type="button">Restablecer datos de demostración</button></div><div id="testOutput" class="testOutput" aria-live="polite">Ejecuta las autopruebas para revisar las reglas financieras.</div><div class="footerNote">Pruebas técnicas del código no sustituyen una evaluación de usabilidad ni un piloto con registros reales.</div>
+      </div>
+    </section>
+  </main>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+const STORAGE_KEY='retail_torre_control_v3_entrega_2026';
+const COUNTRIES=['Chile','Perú','Colombia','Argentina','México'];
+const REQUIRED_ACCOUNTS=['VENTAS','COSTOS'];
+const pageMeta={
+  dashboard:['Resumen ejecutivo','Visualiza el estado del período activo, sus indicadores y las actividades clave para completar el cierre financiero.'],
+  registros:['Registros financieros','Administra la información del período, incorpora datos y controla su consistencia.'],
+  alertas:['Centro de alertas','Revisa las incidencias detectadas y las acciones recomendadas para resolverlas.'],
+  seguimiento:['Seguimiento','Monitorea la cobertura mínima requerida y el avance por país.'],
+  cierres:['Cierres e histórico','Registra cierres formales y consulta el historial consolidado.'],
+  datos:['Centro de datos','Exporta información, descarga respaldos y gestiona la bitácora.'],
+  guia:['Guía de uso','Consulta el flujo sugerido para utilizar la aplicación de forma eficiente.']
+};
+let state=load();
+function demonstrationState(){
+ const amounts=[['Chile',98000,66000],['Perú',72000,48000],['Colombia',61000,42000],['Argentina',53000,38500],['México',87000,61000]];
+ const entries=[];amounts.forEach(([country,v,c],idx)=>{const key=['CHI','PER','COL','ARG','MEX'][idx];entries.push({id:key+'_V_01',country,account:'VENTAS',amount:v,note:'Ventas del período',owner:'Finanzas '+key,updatedAt:nowText()});entries.push({id:key+'_C_01',country,account:'COSTOS',amount:c,note:'Costos del período',owner:'Finanzas '+key,updatedAt:nowText()});});
+ return {active:'2026-09',periods:{'2026-09':{entries,closed:false,closedAt:'',closedBy:'',closeComment:'',history:{},logs:[{text:'Datos de demostración preparados',at:nowText(),period:'2026-09'}]}},editId:null,filter:'ALL',search:''};
+}
+if(!state||!state.periods||Object.keys(state.periods).length===0){state=demonstrationState();save();}
+function resetDemo(){if(!confirm('¿Reemplazar todos los datos de esta aplicación por el caso de demostración? Se perderán los períodos y cambios guardados localmente.'))return;state=demonstrationState();save();resetForm();render();page('dashboard');toast('Datos de demostración restaurados.');}
+function runTests(){
+ const results=[];function check(label,fn){try{results.push([label,!!fn()]);}catch(e){results.push([label,false]);}}
+ const saved=state;
+ try{
+  state=demonstrationState();
+  check('Totales financieros: ventas menos costos',()=>sums(records()).r===sums(records()).v-sums(records()).c);
+  check('Cobertura completa de cinco países',()=>coverageOverall()===100);
+  check('Período apto para cierre sin incidencias críticas',()=>availableToClose());
+  check('ID duplicado identificado',()=>{records().push({...records()[0]});return validation().some(a=>a.kind==='Identificador duplicado');});records().pop();
+  check('Monto negativo identificado',()=>{records()[0].amount=-5;return validation().some(a=>a.kind==='Monto inválido');});records()[0].amount=98000;
+  check('Cuenta faltante identificada',()=>{records().pop();return validation().some(a=>a.kind==='Cuenta faltante');});records().push({id:'MEX_C_01',country:'México',account:'COSTOS',amount:61000,note:'Costos del período',owner:'Finanzas MEX'});
+  check('Bloqueo de cierre ante inconsistencia',()=>{records()[0].amount=-1;return !availableToClose();});
+  check('CSV con ID duplicado rechazado',()=>{try{collectCSVRows('id,pais,cuenta,monto\nCHI_V_01,Chile,VENTAS,50');return false;}catch(e){return true;}});
+  check('CSV correcto aceptado',()=>collectCSVRows('id,pais,cuenta,monto\nPRUEBA01,Chile,VENTAS,50').length===1);
+  check('Respaldo JSON con estructura de períodos',()=>!!JSON.parse(JSON.stringify(saved)).periods);
+ }finally{state=saved;}
+ const pass=results.filter(x=>x[1]).length;
+ $('testOutput').innerHTML=`<strong>${pass} de ${results.length} autopruebas aprobadas</strong>`+results.map(([label,ok])=>`<div>${ok?'✓':'✕'} ${esc(label)}</div>`).join('');
+ toast(`Autopruebas completadas: ${pass}/${results.length}.`);
+}
+
+const $=id=>document.getElementById(id);
+function load(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{active:'',periods:{},editId:null,filter:'ALL',search:''};}catch(e){return {active:'',periods:{},editId:null,filter:'ALL',search:''};}}
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
+function ensurePeriod(period){if(!period) return false; if(!state.periods[period]) state.periods[period]={entries:[],closed:false,closedAt:'',closedBy:'',closeComment:'',history:{},logs:[]}; if(!state.periods[period].logs) state.periods[period].logs=[]; return true;}
+function activeData(){return state.active&&state.periods[state.active]?state.periods[state.active]:null;}
+function records(){let d=activeData(); return d?d.entries:[];}
+function isClosed(){let d=activeData(); return !!(d&&d.closed);}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function money(v){return Number(v||0).toLocaleString('es-CL',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function nowText(){return new Date().toLocaleString('es-CL');}
+function toast(msg){const t=$('toast');t.textContent=msg;t.style.display='block';clearTimeout(toast._t);toast._t=setTimeout(()=>t.style.display='none',2800);}
+function download(name,content,type='text/plain'){const blob=new Blob([content],{type}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),800);}
+function logAction(text){const d=activeData(); if(!d) return; d.logs.unshift({text,at:nowText(),period:state.active}); d.logs=d.logs.slice(0,200); save();}
+function createOpenPeriod(){const p=$('periodInput').value; if(!p){toast('Selecciona un período.'); return;} const existed=!!state.periods[p]; ensurePeriod(p); state.active=p; save(); if(!existed) logAction('Período creado'); toast(existed?'Período abierto correctamente.':'Período creado correctamente.'); render();}
+function addStructureBase(){if(!state.active){toast('Primero crea o abre un período.'); return;} if(isClosed()){toast('El período está cerrado.'); return;} let d=activeData(); let created=0; COUNTRIES.forEach(country=>REQUIRED_ACCOUNTS.forEach(account=>{if(!d.entries.some(e=>e.country===country&&e.account===account)){let id=`${normalizeToken(country).slice(0,3)}_${account}_${String(d.entries.length+1).padStart(2,'0')}`;while(d.entries.some(e=>e.id===id))id+='X';d.entries.push({id,country,account,amount:0,note:'',owner:'',updatedAt:nowText()}); created++;}})); save(); if(created){logAction('Estructura base generada'); toast(`Se agregaron ${created} registros base.`);} else {toast('La estructura base ya estaba completa.');} render();}
+function sums(list){return list.reduce((a,e)=>{const val=Number(e.amount);if(!Number.isFinite(val)||val<0||!COUNTRIES.includes(e.country)||!REQUIRED_ACCOUNTS.includes(e.account))return a;if(e.account==='VENTAS')a.v+=val;else if(e.account==='COSTOS')a.c+=val;a.r=a.v-a.c;return a;},{v:0,c:0,r:0});}
+function byCountry(country,list=records()){return list.filter(e=>e.country===country);}
+function validation(){const list=records(); const alerts=[]; const seen=new Set(); list.forEach((e,idx)=>{if(!e.id||!e.country||!e.account) alerts.push({level:'high',kind:'Registro incompleto',detail:`El registro de la fila ${idx+1} presenta campos obligatorios vacíos.`,fix:'Completa identificador, país y cuenta.'}); if(!/^[A-Za-z0-9_-]{1,24}$/.test(e.id||'')) alerts.push({level:'high',kind:'ID no válido',detail:`Identificador inválido en la fila ${idx+1}.`,fix:'Utiliza entre 1 y 24 caracteres alfanuméricos, guion o guion bajo.'}); if(seen.has(e.id)) alerts.push({level:'high',kind:'Identificador duplicado',detail:`El identificador ${e.id} está repetido en el período.`,fix:'Utiliza un identificador único por registro.'}); else seen.add(e.id); if(!Number.isFinite(Number(e.amount))||e.amount===null||String(e.amount).trim()===''||Number(e.amount)<0) alerts.push({level:'high',kind:'Monto inválido',detail:`El registro ${e.id||'(sin ID)'} contiene un monto no válido.`,fix:'Ingresa un monto numérico igual o mayor que cero.'}); if(!COUNTRIES.includes(e.country)) alerts.push({level:'high',kind:'País no reconocido',detail:`El registro ${e.id||'(sin ID)'} posee un país fuera del catálogo permitido.`,fix:'Selecciona uno de los países configurados en la aplicación.'}); if(!REQUIRED_ACCOUNTS.includes(e.account)) alerts.push({level:'high',kind:'Cuenta no válida',detail:`El registro ${e.id||'(sin ID)'} contiene una cuenta no permitida.`,fix:'Utiliza únicamente las cuentas Ventas o Costos.'}); if(!e.note) alerts.push({level:'low',kind:'Referencia recomendada',detail:`El registro ${e.id||'(sin ID)'} no posee referencia o nota asociada.`,fix:'Agrega una breve referencia para facilitar la trazabilidad.'}); if(!e.owner) alerts.push({level:'low',kind:'Responsable recomendado',detail:`El registro ${e.id||'(sin ID)'} no indica responsable de origen.`,fix:'Registra el analista o área responsable del dato.'});}); COUNTRIES.forEach(country=>{const countryEntries=byCountry(country,list); REQUIRED_ACCOUNTS.forEach(account=>{if(!countryEntries.some(e=>e.account===account)) alerts.push({level:'medium',kind:'Cuenta faltante',detail:`No existe un registro de ${account.toLowerCase()} para ${country}.`,fix:`Incorpora al menos un registro de ${account.toLowerCase()} para ${country}.`});});}); return alerts;}
+function groupedAlerts(){const arr=validation(); return {all:arr,high:arr.filter(a=>a.level==='high'),medium:arr.filter(a=>a.level==='medium'),low:arr.filter(a=>a.level==='low')};}
+function coverageForCountry(country){const ce=byCountry(country); const hit=REQUIRED_ACCOUNTS.filter(a=>ce.some(e=>e.account===a)).length; return {hit,total:REQUIRED_ACCOUNTS.length,percent:Math.round(hit/REQUIRED_ACCOUNTS.length*100),records:ce.length};}
+function coverageOverall(){const total=COUNTRIES.length*REQUIRED_ACCOUNTS.length; let hit=0; COUNTRIES.forEach(c=>{REQUIRED_ACCOUNTS.forEach(a=>{if(records().some(e=>e.country===c&&e.account===a)) hit++;});}); return total?Math.round(hit/total*100):0;}
+function availableToClose(){const g=groupedAlerts(); return state.active && g.high.length===0 && g.medium.length===0 && records().length>0;}
+function filteredRecords(){let list=[...records()]; const f=$('countryFilter').value||'ALL'; const q=($('tableSearch').value||'').trim().toLowerCase(); if(f!=='ALL') list=list.filter(e=>e.country===f); if(q) list=list.filter(e=>[e.id,e.country,e.account,e.note,e.owner].some(v=>String(v||'').toLowerCase().includes(q))); return list;}
+function resetForm(){state.editId=null; $('recordForm').reset(); $('fCountry').value=COUNTRIES[0]; $('fAccount').value='VENTAS'; $('saveRecordBtn').textContent='Guardar registro';}
+function editRecord(id){if(isClosed()){toast('El período está cerrado.');return;}const rec=records().find(e=>e.id===id); if(!rec) return; state.editId=id; $('fId').value=rec.id; $('fCountry').value=rec.country; $('fAccount').value=rec.account; $('fAmount').value=rec.amount; $('fNote').value=rec.note||''; $('fOwner').value=rec.owner||''; $('saveRecordBtn').textContent='Guardar cambios'; page('registros'); window.scrollTo({top:0,behavior:'smooth'});}
+function saveRecord(ev){ev.preventDefault(); if(!state.active){toast('Primero crea o abre un período.'); return;} if(isClosed()){toast('El período está cerrado.'); return;} const id=$('fId').value.trim(); const rec={id,country:$('fCountry').value,account:$('fAccount').value,amount:Number($('fAmount').value),note:$('fNote').value.trim(),owner:$('fOwner').value.trim(),updatedAt:nowText()}; if(!/^[A-Za-z0-9_-]{1,24}$/.test(id)){toast('El identificador debe tener 1 a 24 caracteres: letras, números o guiones.');return;} if($('fAmount').value.trim()===''||!Number.isFinite(rec.amount)||rec.amount<0){toast('El monto debe ser numérico y no negativo.');return;} const list=records(); if(!state.editId&&list.length>=1000){toast('Límite de 1.000 registros por período.');return;} if(state.editId){const idx=list.findIndex(e=>e.id===state.editId); if(idx>-1){if(id!==state.editId && list.some(e=>e.id===id)){toast('Ya existe un registro con ese identificador.'); return;} list[idx]=rec; logAction(`Registro actualizado: ${id}`);}} else {if(list.some(e=>e.id===id)){toast('Ya existe un registro con ese identificador.'); return;} list.push(rec); logAction(`Registro agregado: ${id}`);} save(); resetForm(); render(); toast('Registro guardado correctamente.');}
+function deleteRecord(id){if(isClosed()){toast('El período está cerrado.'); return;} const list=records(); const idx=list.findIndex(e=>e.id===id); if(idx<0) return; if(confirm(`¿Eliminar el registro ${id}?`)){list.splice(idx,1); save(); logAction(`Registro eliminado: ${id}`); render(); toast('Registro eliminado.');}}
+function normalizeToken(v){return String(v||'').trim().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();}
+function parseCSV(text){
+  const src=String(text).replace(/^\uFEFF/,'');const firstLine=src.split(/\r?\n/).find(x=>x.trim())||'';
+  const delim=((firstLine.match(/;/g)||[]).length>(firstLine.match(/,/g)||[]).length)?';':',';
+  let rows=[],row=[],field='',quoted=false;
+  for(let i=0;i<src.length;i++){
+    const ch=src[i];
+    if(ch==='"') {if(quoted&&src[i+1]==='"'){field+='"';i++;}else quoted=!quoted;}
+    else if(ch===delim&&!quoted){row.push(field.trim());field='';}
+    else if((ch==='\n'||ch==='\r')&&!quoted){if(ch==='\r'&&src[i+1]==='\n')i++;row.push(field.trim());if(row.some(v=>v!==''))rows.push(row);row=[];field='';}
+    else field+=ch;
+  }
+  if(quoted)throw Error('Hay comillas CSV sin cerrar.');
+  row.push(field.trim());if(row.some(v=>v!=='')) rows.push(row);
+  return rows;
+}
+function collectCSVRows(txt){
+ const rows=parseCSV(txt);if(!rows.length)throw Error('El archivo CSV no contiene registros.');
+ const h=rows[0].map(normalizeToken);const start=(h[0]==='ID'||h[0]==='IDENTIFICADOR')?1:0;
+ const arr=[]; const ids=new Set(records().map(r=>r.id));
+ for(let i=start;i<rows.length;i++){
+  const cells=rows[i];if(cells.length<4||cells.length>6)throw Error(`Fila ${i+1}: se esperan 4 a 6 columnas.`);
+  let [id,country,account,mount,note='',owner='']=cells;
+  id=id.trim();country=COUNTRIES.find(v=>normalizeToken(v)===normalizeToken(country));account=normalizeToken(account);
+  const amount=Number(String(mount).trim());
+  if(!/^[A-Za-z0-9_-]{1,24}$/.test(id))throw Error(`Fila ${i+1}: ID no válido.`);
+  if(!country)throw Error(`Fila ${i+1}: país desconocido.`);
+  if(!REQUIRED_ACCOUNTS.includes(account))throw Error(`Fila ${i+1}: cuenta debe ser VENTAS o COSTOS.`);
+  if(String(mount).trim()===''||!Number.isFinite(amount)||amount<0)throw Error(`Fila ${i+1}: monto no válido.`);
+  if(ids.has(id))throw Error(`Fila ${i+1}: ID duplicado (${id}).`);
+  if(note.length>140||owner.length>80)throw Error(`Fila ${i+1}: nota o responsable demasiado extenso.`);
+  ids.add(id);arr.push({id,country,account,amount,note,owner,updatedAt:nowText()});
+ }
+ if(!arr.length)throw Error('No hay filas para importar.');
+ if(arr.length+records().length>1000)throw Error('El período admite hasta 1.000 registros.');
+ return arr;
+}
+function importRows(txt){
+ if(!state.active){toast('Primero crea o abre un período.');return;}
+ if(isClosed()){toast('El período está cerrado.');return;}
+ try {const items=collectCSVRows(txt);activeData().entries.push(...items);logAction(`Importación CSV: ${items.length} registros incorporados`);save();render();toast(`Se importaron ${items.length} registros correctamente.`);}
+ catch(e){toast(`Importación cancelada: ${e.message}`);}
+}
+function importFromText(){const txt=$('bulkText').value.trim();if(!txt){toast('Pega primero el contenido CSV.');return;}importRows(txt);}
+function importCSVFile(file){if(!file)return;if(file.size>1024*1024){toast('El CSV no debe superar 1 MB.');return;}const rd=new FileReader();rd.onload=()=>importRows(rd.result);rd.readAsText(file);}
+function validatePeriod(){if(!state.active){toast('No hay período activo.'); return;} const g=groupedAlerts(); logAction(`Validación ejecutada: ${g.all.length} observaciones`); render(); toast(`Validación completada. Alertas detectadas: ${g.all.length}.`);}
+function closePeriod(){if(!state.active){toast('No hay período activo.'); return;} if(isClosed()){toast('El período ya se encuentra cerrado.'); return;} if(!availableToClose()){toast('No es posible cerrar: existen alertas altas o medias pendientes, o no hay registros.'); return;} const owner=$('closeOwner').value.trim(); if(!owner){toast('Ingresa el responsable del cierre.'); return;} const comment=$('closeComment').value.trim(); const d=activeData(); d.closed=true; d.closedBy=owner; d.closeComment=comment; d.closedAt=nowText(); d.history={totals:sums(records()),entries:records().length}; save(); logAction(`Período cerrado por ${owner}`); render(); toast('Período cerrado correctamente.');}
+function reopenPeriod(){if(!state.active){toast('No hay período activo.'); return;} const d=activeData(); if(!d.closed){toast('El período no está cerrado.'); return;} if(confirm('¿Deseas reabrir el período? Esto permitirá editar nuevamente los registros.')){d.closed=false; save(); logAction('Período reabierto'); render(); toast('Período reabierto correctamente.');}}
+function historyRows(){return Object.entries(state.periods).filter(([,d])=>d.closed&&d.history&&d.history.totals).sort((a,b)=>a[0]<b[0]?1:-1);}
+function exportRecords(){if(!state.active){toast('No hay período activo.'); return;} const rows=[['id','pais','cuenta','monto_usd','nota','responsable','actualizado']].concat(records().map(e=>[e.id,e.country,e.account,e.amount,e.note||'',e.owner||'',e.updatedAt||''])); download(`registros_${state.active}.csv`,rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n'),'text/csv;charset=utf-8'); logAction('Exportación de registros');}
+function exportSummary(){if(!state.active){toast('No hay período activo.'); return;} const rows=[['pais','ventas_usd','costos_usd','resultado_usd','cobertura_pct']]; COUNTRIES.forEach(c=>{const t=sums(byCountry(c)); rows.push([c,t.v,t.c,t.r,coverageForCountry(c).percent]);}); const total=sums(records()); rows.push(['TOTAL',total.v,total.c,total.r,coverageOverall()]); download(`resumen_${state.active}.csv`,rows.map(r=>r.join(',')).join('\n'),'text/csv;charset=utf-8'); logAction('Exportación de resumen');}
+function exportTemplate(){const rows=[['id','pais','cuenta','monto','nota','responsable'],['CHI_VENTAS_01','Chile','VENTAS','120000','Cierre de ventas','Finanzas Chile'],['CHI_COSTOS_01','Chile','COSTOS','84500','Consolidado costos','Finanzas Chile']]; download('plantilla_registros.csv',rows.map(r=>r.join(',')).join('\n'),'text/csv;charset=utf-8');}
+function backup(){if(state.active)logAction('Respaldo JSON descargado');download('respaldo_torre_control_financiera_v3.json',JSON.stringify(state,null,2),'application/json');toast('Respaldo descargado.');}
+function restore(file){if(file.size>2*1024*1024){toast('El respaldo supera 2 MB.');return;}
+ const reader=new FileReader();reader.onload=e=>{try{
+ const data=JSON.parse(e.target.result);
+ if(!data||typeof data!=='object'||!data.periods||typeof data.periods!=='object'||Array.isArray(data.periods))throw Error('Estructura incorrecta');
+ const periodKeys=Object.keys(data.periods);if(periodKeys.length>60)throw Error('Demasiados períodos');
+ for(const p of periodKeys){const d=data.periods[p];if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(p)||!d||!Array.isArray(d.entries)||d.entries.length>1000)throw Error('Períodos no válidos');
+ for(const r of d.entries){if(!r||typeof r.id!=='string'||!Array.isArray(COUNTRIES)||typeof r.country!=='string'||typeof r.account!=='string'||!Number.isFinite(Number(r.amount)))throw Error('Registros inválidos');}
+ d.logs=Array.isArray(d.logs)?d.logs.slice(0,200):[];}
+ if(!confirm('¿Restaurar este respaldo? Se reemplazarán todos los períodos almacenados en este navegador.'))return;
+ state={active:typeof data.active==='string'&&data.periods[data.active]?data.active:(periodKeys[0]||''),periods:data.periods,editId:null,filter:'ALL',search:''};
+ save();resetForm();render();page('dashboard');toast('Respaldo restaurado correctamente.');
+ }catch(err){toast('No fue posible restaurar el respaldo: '+err.message);}};reader.readAsText(file);}
+function exportLog(){let rows=[['periodo','fecha','accion']]; Object.entries(state.periods).forEach(([period,d])=>(d.logs||[]).forEach(l=>rows.push([period,l.at,l.text]))); download('bitacora_torre_control.csv',rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n'),'text/csv;charset=utf-8');}
+function page(name){document.querySelectorAll('.page').forEach(s=>s.classList.remove('active')); $('page-'+name).classList.add('active'); document.querySelectorAll('nav button').forEach(b=>b.setAttribute('aria-current', b.dataset.page===name ? 'page' : 'false')); $('pageTitle').textContent=pageMeta[name][0]; $('pageSubtitle').textContent=pageMeta[name][1];}
+function render(){
+  const active=state.active||''; $('periodInput').value=active; $('activePeriodLabel').textContent=active||'Sin seleccionar';
+  const selection=$('countryFilter').value||'ALL';
+  $('countryFilter').innerHTML='<option value="ALL">Todos los países</option>'+COUNTRIES.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+  $('countryFilter').value=selection==='ALL'||COUNTRIES.includes(selection)?selection:'ALL';
+  if(!$('fCountry').options.length){$('fCountry').innerHTML=COUNTRIES.map(c=>`<option>${esc(c)}</option>`).join('');$('fCountry').value=COUNTRIES[0];}
+  const recs=filteredRecords(); const selectedCountry=$('countryFilter').value||'ALL'; const displayCountries=selectedCountry==='ALL'?COUNTRIES:[selectedCountry]; const totals=sums(selectedCountry==='ALL'?records():byCountry(selectedCountry)); const g=groupedAlerts(); const closed=isClosed(); const cover=coverageOverall();
+  $('headerState').textContent=!active?'Sin período activo':closed?'Período cerrado':(g.high.length||g.medium.length)?'Período con observaciones':'Período listo para cerrar';
+  $('stats').innerHTML=[
+    ['Ventas', money(totals.v), 'Total de gestión del período y filtro seleccionado.'],
+    ['Costos', money(totals.c), 'Total de gestión del período y filtro seleccionado.'],
+    ['Resultado', money(totals.r), 'Ventas menos costos.'],
+    ['Cobertura', cover+'%', 'Cuentas requeridas registradas.'],
+    ['Alertas', g.all.length, 'Observaciones detectadas en la validación.']
+  ].map(([label,val,sub])=>`<div class="statCard"><div class="label">${esc(label)}</div><div class="value">${esc(val)}</div><div class="sub">${esc(sub)}</div></div>`).join('');
+  const maxCountryResult=Math.max(1,...displayCountries.map(name=>Math.abs(sums(byCountry(name)).r)));
+  $('countryBars').innerHTML=displayCountries.map(c=>{const t=sums(byCountry(c)); const pct=Math.round(Math.abs(t.r)/maxCountryResult*100); return `<div class="barItem"><strong>${esc(c)}</strong><div class="track"><div style="width:${pct}%"></div></div><span>${money(t.r)} USD</span></div>`;}).join('')||'<div class="empty">Sin datos para mostrar.</div>';
+  $('countrySummaryTable').innerHTML=displayCountries.map(c=>{const t=sums(byCountry(c)); const cov=coverageForCountry(c); return `<tr><td>${esc(c)}</td><td class="num">${money(t.v)}</td><td class="num">${money(t.c)}</td><td class="num">${money(t.r)}</td><td><div class="progress"><div style="width:${cov.percent}%"></div></div><span class="help">${cov.hit}/${cov.total} cuentas</span></td></tr>`;}).join('');
+  $('metricValidation').textContent=!active?'Pendiente':g.all.length?`${g.all.length} observaciones`:'Sin observaciones';
+  $('metricValidationSub').textContent=!active?'Sin período activo.':g.all.length?'Revisa el Centro de alertas para resolverlas.':'La estructura supera las reglas de validación.';
+  $('metricClose').textContent=!active?'No disponible':closed?'Período cerrado':availableToClose()?'Habilitado':'Bloqueado';
+  $('metricCloseSub').textContent=closed?`Cerrado por ${activeData().closedBy||'N/D'} el ${activeData().closedAt||''}.`:availableToClose()?'Ya es posible registrar el cierre.':'El cierre se habilita cuando no existan alertas altas ni medias.';
+  $('metricCoverage').textContent=cover+'%'; $('metricCoverageSub').textContent=`Cobertura sobre ${COUNTRIES.length*REQUIRED_ACCOUNTS.length} combinaciones país-cuenta.`;
+  const last=(activeData()?.logs||[])[0]; $('metricLastAction').textContent=last?last.text:'Sin acciones'; $('metricLastActionSub').textContent=last?last.at:'La bitácora se actualizará cuando realices acciones.';
+  $('recentLog').innerHTML=(activeData()?.logs||[]).slice(0,5).map(l=>`<div class="logItem"><strong>${esc(l.text)}</strong><span>${esc(l.at)}</span></div>`).join('')||'<div class="empty">No hay acciones registradas en este período.</div>';
+  $('recordsCounter').textContent=`${records().length} registros`;
+  $('recordsTable').innerHTML=recs.length?recs.map(r=>`<tr><td>${esc(r.id)}</td><td>${esc(r.country)}</td><td>${esc(r.account)}</td><td class="num">${money(r.amount)}</td><td>${esc(r.note||'')}</td><td>${esc(r.owner||'')}</td><td>${esc(r.updatedAt||'')}</td><td><div class="inline"><button ${closed?'disabled':''} data-edit="${esc(r.id)}">Editar</button><button class="danger" ${closed?'disabled':''} data-delete="${esc(r.id)}">Eliminar</button></div></td></tr>`).join(''):`<tr><td colspan="8"><div class="empty">No existen registros para el período activo o para el filtro aplicado.</div></td></tr>`;
+  $('countHigh').textContent=g.high.length; $('countMedium').textContent=g.medium.length; $('countLow').textContent=g.low.length;
+  $('alertsList').innerHTML=g.all.length?g.all.map(a=>`<div class="alertCard ${a.level}"><h4>${esc(a.kind)}</h4><p>${esc(a.detail)}</p><div class="alertMeta"><span class="badge ${a.level==='high'?'bad':a.level==='medium'?'warn':'info'}">${a.level==='high'?'Alta':a.level==='medium'?'Media':'Baja'}</span><span class="badge info">Cómo corregirlo</span></div><p style="margin-top:10px"><strong>Acción sugerida:</strong> ${esc(a.fix)}</p></div>`).join(''):'<div class="empty">No existen incidencias para el período activo.</div>';
+  $('trackingTable').innerHTML=COUNTRIES.map(c=>{const cov=coverageForCountry(c); const countryAlerts=g.all.filter(a=>a.detail.includes(c)).length; let status=cov.percent===100?'Completo':cov.percent>=50?'Parcial':'Inicial'; let badge=status==='Completo'?'ok':status==='Parcial'?'warn':'bad'; return `<tr><td>${esc(c)}</td><td>${cov.records}</td><td>${cov.hit}/${cov.total}</td><td><div class="progress"><div style="width:${cov.percent}%"></div></div><span class="help">${cov.percent}%</span></td><td><span class="badge ${badge}">${status}</span></td><td>${countryAlerts}</td></tr>`;}).join('');
+  const checks=[
+    [active?1:0,'Período activo definido'],
+    [records().length>0?1:0,'Existencia de registros cargados'],
+    [cover===100?1:0,'Cobertura mínima completa por país'],
+    [g.high.length===0?1:0,'Sin alertas altas'],
+    [g.medium.length===0?1:0,'Sin alertas medias'],
+    [closed?1:0,'Cierre registrado']
+  ];
+  $('checklist').innerHTML=checks.map(([ok,label])=>`<div class="logItem"><strong>${ok?'✓':'•'} ${esc(label)}</strong><span>${ok?'Cumplido':'Pendiente'}</span></div>`).join('');
+  $('closureState').innerHTML=!active?'<div class="empty">No hay período activo.</div>':closed?`<div class="tile"><h4>Período cerrado</h4><p><strong>Responsable:</strong> ${esc(activeData().closedBy||'N/D')}<br><strong>Fecha:</strong> ${esc(activeData().closedAt||'N/D')}<br><strong>Comentario:</strong> ${esc(activeData().closeComment||'Sin comentario')}</p></div>`:`<div class="tile"><h4>Período abierto</h4><p>${availableToClose()?'El período ya está listo para ser cerrado.':'Aún existen validaciones o estructuras pendientes por completar.'}</p></div>`;
+  $('historyTable').innerHTML=historyRows().length?historyRows().map(([p,d])=>`<tr><td>${esc(p)}</td><td>${esc(d.closedBy||'')}</td><td>${esc(d.closeComment||'')}</td><td class="num">${money(d.history.totals.v)}</td><td class="num">${money(d.history.totals.c)}</td><td class="num">${money(d.history.totals.r)}</td><td>${esc(d.closedAt||'')}</td></tr>`).join(''):`<tr><td colspan="7"><div class="empty">No existen períodos cerrados todavía.</div></td></tr>`;
+  let allLogs=[]; Object.entries(state.periods).forEach(([period,d])=>(d.logs||[]).forEach(l=>allLogs.push({...l,period}))); allLogs.sort((a,b)=>a.at<b.at?1:-1); $('fullLog').innerHTML=allLogs.length?allLogs.map(l=>`<div class="logItem"><strong>${esc(l.text)}</strong><span>${esc(l.at)} · ${esc(l.period)}</span></div>`).join(''):'<div class="empty">Aún no existen acciones registradas.</div>';
+  $('jumpToClose').disabled=!active; $('jumpToAlerts').disabled=!active;
+  for(const id of ['fId','fCountry','fAccount','fAmount','fNote','fOwner','saveRecordBtn','importTextBtn'])$(id).disabled=closed||!active;
+  $('closeBtn').disabled=closed||!active||!availableToClose();$('reopenBtn').disabled=!closed;
+  $('autofillBtn').disabled=closed||!active;
+  save();
+}
+function bind(){
+  document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>page(b.dataset.page));
+  $('createPeriodBtn').onclick=createOpenPeriod;
+  $('autofillBtn').onclick=addStructureBase;
+  $('recordForm').addEventListener('submit',saveRecord);
+  $('cancelEditBtn').onclick=()=>{resetForm(); toast('Edición cancelada.');};
+  $('validateBtn').onclick=validatePeriod;
+  $('importTextBtn').onclick=importFromText;
+  $('downloadTemplateBtn').onclick=exportTemplate;
+  $('jumpToAlerts').onclick=()=>page('alertas');
+  $('jumpToClose').onclick=()=>page('cierres');
+  $('quickAddRecord').onclick=()=>page('registros');
+  $('quickValidate').onclick=validatePeriod;
+  $('quickExport').onclick=exportSummary;
+  $('goToRecordsFromAlerts').onclick=()=>page('registros');
+  $('closeBtn').onclick=closePeriod;
+  $('reopenBtn').onclick=reopenPeriod;
+  $('exportRecordsBtn').onclick=exportRecords;
+  $('exportSummaryBtn').onclick=exportSummary;
+  $('backupBtn').onclick=backup;
+  $('restoreInput').addEventListener('change',e=>{const f=e.target.files[0]; if(f) restore(f); e.target.value='';});
+  $('exportLogBtn').onclick=exportLog;
+  $('runTestsBtn').onclick=runTests;
+  $('resetDemoBtn').onclick=resetDemo;
+  $('csvFileInput').onchange=e=>{const f=e.target.files[0];if(f)importCSVFile(f);e.target.value='';};
+  $('recordsTable').addEventListener('click',e=>{const edit=e.target.closest('[data-edit]');const del=e.target.closest('[data-delete]');if(edit)editRecord(edit.dataset.edit);else if(del)deleteRecord(del.dataset.delete);});
+  $('countryFilter').addEventListener('change',render);
+  $('tableSearch').addEventListener('input',render);
+}
+bind(); resetForm(); page('dashboard'); render();
+</script>
+</body>
+</html>

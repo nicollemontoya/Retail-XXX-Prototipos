@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0c2936">
+<meta name="description" content="Evolución de los tres prototipos de la Torre de Control Financiera de Retail XXX.">
+<title>Retail XXX | Prototipos de la Torre de Control Financiera</title>
+<style>
+:root{--navy:#102c3a;--teal:#087e80;--mint:#e8f6f3;--bg:#f4f7f8;--text:#183341;--muted:#647782;--border:#dfe8eb}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+header{background:linear-gradient(125deg,#102c3a,#164b58);color:white;padding:25px max(22px,calc((100vw - 1100px)/2));}
+.brand{display:flex;align-items:center;gap:12px;font-size:14px;font-weight:700;letter-spacing:.09em}
+.mark{display:grid;place-items:center;width:36px;height:36px;border:1px solid #6cb5af;border-radius:10px;background:#ffffff17;color:#a9f3e7;font-size:22px}
+.hero{max-width:1100px;margin:0 auto;padding:66px 24px 58px}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#a4e7d9}
+h1{font-size:clamp(32px,5vw,54px);letter-spacing:-.045em;line-height:1.1;max-width:760px;margin:14px 0 18px}
+.hero p{max-width:720px;color:#d7e7ea;font-size:17px}
+main{max-width:1100px;margin:0 auto;padding:55px 24px 72px}
+.intro{max-width:740px;margin-bottom:30px}h2{font-size:27px;letter-spacing:-.03em;margin:0 0 10px}
+.intro p{color:var(--muted);margin:0}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.card{display:flex;flex-direction:column;background:white;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 8px 26px #102c3a08;transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 32px #102c3a14}
+.visual{height:155px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(135deg,#e8f1f2,#f4f9f9)}
+.card:nth-child(2) .visual{background:linear-gradient(135deg,#e1f2f0,#f4fbf9)}
+.card:nth-child(3) .visual{background:linear-gradient(135deg,#d5efea,#e8f7f3)}
+.version{font-size:12px;font-weight:800;letter-spacing:.1em;color:#2b6370}
+.mock{display:flex;gap:8px;align-items:end}
+.mock span{background:#fff;border:1px solid #bcd8d6;border-radius:7px;display:block;width:25%;height:45px}
+.mock span:nth-child(2){height:63px}.mock span:nth-child(3){height:36px}.mock span:nth-child(4){height:74px;background:#83c7ba}
+.card-body{padding:24px;display:flex;flex:1;flex-direction:column}
+.card h3{font-size:21px;margin:0 0 10px;letter-spacing:-.025em}
+.card p{color:var(--muted);font-size:14px;margin:0 0 22px;flex:1}
+.tag{align-self:flex-start;display:inline-block;border-radius:20px;padding:5px 10px;background:#edf3f5;color:#40606a;font-size:11px;font-weight:800;margin-bottom:12px}
+.tag.final{background:#d9f4e9;color:#096d58}
+a.button{display:flex;align-items:center;justify-content:space-between;background:var(--navy);color:#fff;text-decoration:none;padding:13px 17px;border-radius:10px;font-weight:700;font-size:14px}
+a.button:hover,a.button:focus-visible{background:var(--teal)}
+.card:last-child a.button{background:var(--teal)}.card:last-child a.button:hover{background:#065e61}
+.info{margin-top:32px;background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px 25px}
+.info h3{margin:0 0 6px;font-size:17px}.info p{margin:0;color:var(--muted);font-size:14px}
+footer{text-align:center;color:#667d85;font-size:13px;padding:25px 20px;border-top:1px solid var(--border)}
+@media(max-width:780px){.cards{grid-template-columns:1fr}.hero{padding:45px 24px}.visual{height:115px}.mock span{height:35px!important}}
+</style>
+</head>
+<body>
+<header><div class="brand"><span class="mark">▥</span> RETAIL XXX · PROYECTO DE INNOVACIÓN</div>
+<div class="hero"><div class="eyebrow">Evolución de la solución digital</div>
+<h1>Torre de Control Financiera</h1>
+<p>Conoce el proceso de desarrollo de una herramienta para organizar registros financieros, revisar inconsistencias y apoyar el seguimiento de los períodos de consolidación.</p>
+</div></header>
+<main>
+<section class="intro"><h2>Explora los tres prototipos</h2>
+<p>Cada versión muestra una etapa del desarrollo. El prototipo 3 corresponde a la solución final presentada para la evaluación.</p></section>
+<section class="cards" aria-label="Prototipos disponibles">
+<article class="card"><div class="visual"><span class="version">VERSIÓN 01</span><div class="mock"><span></span><span></span><span></span><span></span></div></div>
+<div class="card-body"><span class="tag">Primera propuesta</span><h3>Prototipo 1</h3>
+<p>Primera aproximación al panel financiero, con indicadores básicos y una estructura inicial para visualizar registros.</p>
+<a class="button" href="./prototipo-v1.html">Explorar prototipo 1 <span aria-hidden="true">↗</span></a></div></article>
+<article class="card"><div class="visual"><span class="version">VERSIÓN 02</span><div class="mock"><span></span><span></span><span></span><span></span></div></div>
+<div class="card-body"><span class="tag">Versión mejorada</span><h3>Prototipo 2</h3>
+<p>Iteración que mejora la navegación y amplía las opciones de carga, validación, alertas, seguimiento y revisión.</p>
+<a class="button" href="./prototipo-v2.html">Explorar prototipo 2 <span aria-hidden="true">↗</span></a></div></article>
+<article class="card"><div class="visual"><span class="version">VERSIÓN 03 · FINAL</span><div class="mock"><span></span><span></span><span></span><span></span></div></div>
+<div class="card-body"><span class="tag final">Entrega final</span><h3>Prototipo 3</h3>
+<p>Versión final de demostración, con gestión de registros, alertas, seguimiento, cierres, histórico y herramientas de exportación y respaldo.</p>
+<a class="button" href="./prototipo-v3.html">Abrir prototipo final <span aria-hidden="true">↗</span></a></div></article>
+</section>
+<section class="info"><h3>Acerca de este proyecto</h3><p>Proyecto académico de Retail XXX. Los prototipos muestran una propuesta de gestión financiera y no sustituyen un sistema contable corporativo. Para acceder a cada versión, selecciona la tarjeta correspondiente.</p></section>
+</main>
+<footer>Retail XXX · Torre de Control Financiera · Proyecto académico</footer>
+</body></html>
